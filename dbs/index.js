@@ -29,6 +29,7 @@ function connect(url) {
 
 exports.initdb = async function () {
   let database = await connect(PROD_URI);
+  await database.collection("positions").dropIndex("time_1");
   database
     .collection("positions")
     .createIndex({ time: 1 }, { expireAfterSeconds: 3600 });

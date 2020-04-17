@@ -32,7 +32,7 @@ exports.initdb = async function () {
   await database.collection("positions").dropIndex("time_1");
   database
     .collection("positions")
-    .createIndex({ time: 1 }, { expireAfterSeconds: 3600 });
+    .createIndex({ time: 1 }, { expireAfterSeconds: 172800 });
   dbs.production = database;
 };
 

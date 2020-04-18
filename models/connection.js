@@ -30,6 +30,7 @@ module.exports.newConnectionString = async (id) => {
     {
       $set: {
         connectionString: newConnectionString,
+        time: new Date(),
       },
     }
   );

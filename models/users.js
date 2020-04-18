@@ -55,7 +55,7 @@ module.exports.getChildrenPos = async (id) => {
     .collection(CHILDREN)
     .find({ user: ObjectId(id) })
     .toArray();
-  if (children.length === 0) {
+  if (!children) {
     return false;
   }
   let position = [];

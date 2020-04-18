@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const passport = require("passport");
+const io = require("./middlewares/socketio");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -13,6 +14,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const childrenRouter = require("./routes/children");
+const connectionRouter = require("./routes/connect");
 
 const modelUser = require("./models/users");
 
@@ -67,10 +69,16 @@ app.use(bodyParser());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/children", childrenRouter);
+app.use("/connect", connectionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

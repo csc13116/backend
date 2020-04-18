@@ -15,7 +15,9 @@ nsp.on("connection", (sockets) => {
   });
   sockets.on("child wait", async (data) => {
     const result = await connectionModel.getConnection(data);
-    sockets.broadcast.to(result.socketId).emit("child connect", null);
+    sockets.broadcast
+      .to(result.socketId)
+      .emit("child connect", { connect: true });
   });
   // sockets.on("new connection", async (data) => {
   //   const result = await connectionModel.newConnectionString(data);

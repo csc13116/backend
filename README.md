@@ -38,4 +38,4 @@
     }
 }
 ### Host socket io test link:
-(https://socketio-temp.herokuapp.com/)[https://socketio-temp.herokuapp.com/]
+[https://socketio-temp.herokuapp.com/](https://socketio-temp.herokuapp.com/)

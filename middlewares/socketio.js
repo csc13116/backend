@@ -1,4 +1,5 @@
 var io = require("socket.io")();
+let socketAPI = {};
 const nsp = io.of("/connect");
 var connectionModel = require("../models/connection");
 //
@@ -24,4 +25,7 @@ nsp.on("connection", (sockets) => {
   //   sockets;
   // });
 });
-module.exports = nsp;
+
+socketAPI.io = io;
+
+module.exports = socketAPI;

@@ -33,10 +33,10 @@ exports.initdb = async function () {
   // database
   //   .collection("positions")
   //   .createIndex({ time: 1 }, { expireAfterSeconds: 172800 });
-  await database.collection("connections").dropIndex("time_1");
-  database
-    .collection("connections")
-    .createIndex({ time: 1 }, { expireAfterSeconds: 1200 });
+  // await database.collection("connections").dropIndex("time_1");
+  // database
+  //   .collection("connections")
+  //   .createIndex({ time: 1 }, { expireAfterSeconds: 1200 });
   dbs.production = database;
 };
 

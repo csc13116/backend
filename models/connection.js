@@ -1,24 +1,30 @@
 const { dbs } = require("../dbs");
 const ObjectId = require("mongodb").ObjectId;
 const CONNECTION = "connections";
+const usersModel = require("../models/users");
 const nsp = require("../middlewares/socketio");
 
 module.exports.setConnection = async (id, socketId) => {
-  let newConnection = {
-    parent: ObjectId(id),
-    connectionString: Math.floor(Math.random() * 1000000)
-      .toString()
-      .padStart(6, "0"),
-    socketId,
-    time: new Date(),
-  };
-  const connections = await dbs.production
-    .collection(CONNECTION)
-    .insertOne(newConnection);
-  if (connections.nInserted === 0) {
+  let parent = usersModel.checkById(id);
+  if (parent) {
+    let newConnection = {
+      parent: ObjectId(id),
+      connectionString: Math.floor(Math.random() * 1000000)
+        .toString()
+        .padStart(6, "0"),
+      socketId,
+      time: new Date(),
+    };
+    const connections = await dbs.production
+      .collection(CONNECTION)
+      .insertOne(newConnection);
+    if (connections.nInserted === 0) {
+      return false;
+    }
+    return newConnection.connectionString;
+  } else {
     return false;
   }
-  return newConnection.connectionString;
 };
 
 module.exports.newConnectionString = async (id) => {

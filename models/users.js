@@ -69,3 +69,11 @@ module.exports.getChildrenPos = async (id) => {
   }
   return position;
 };
+
+module.exports.checkById = async (id) => {
+  const user = await dbs.production
+    .collection(USERS)
+    .findOne({ _id: ObjectId(id) });
+  if (user) return true;
+  return false;
+};

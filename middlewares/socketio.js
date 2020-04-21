@@ -16,6 +16,7 @@ nsp.on("connection", (sockets) => {
     const result = await connectionModel.getConnection(data);
     if (!result) {
       let child = await childrenModel.newChild(result.parent);
+      await connectionModel.removeConnection(data);
       sockets.emit("found", { connect: child.insertedId });
       sockets.broadcast
         .to(result.socketId)

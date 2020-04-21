@@ -5,7 +5,7 @@ const usersModel = require("../models/users");
 const nsp = require("../middlewares/socketio");
 
 module.exports.setConnection = async (id, socketId) => {
-  let parent = usersModel.checkById(id);
+  let parent = await usersModel.checkById(id);
   if (parent) {
     let newConnection = {
       parent: ObjectId(id),

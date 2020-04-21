@@ -10,7 +10,7 @@ nsp.on("connection", (sockets) => {
       data,
       sockets.id
     );
-    sockets.emit("wait connect", connectionString);
+    sockets.emit("wait connect", { connectionString });
   });
   sockets.on("child wait", async (data) => {
     const result = await connectionModel.getConnection(data);
@@ -27,7 +27,7 @@ nsp.on("connection", (sockets) => {
   sockets.on("set new connection", async (data) => {
     const result = await connectionModel.newConnectionString(data);
     if (!result) {
-      sockets.emit("get new connection", result);
+      sockets.emit("get new connection", { newConnectionString: result });
     } else {
       sockets.emit("erro", { msg: "not found" });
     }

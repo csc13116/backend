@@ -13,11 +13,9 @@ nsp.on("connection", (sockets) => {
     sockets.emit("wait connect", { connectionString });
   });
   sockets.on("child wait", async (data) => {
-    console.log("connect to child");
-    console.log(data);
     const result = await connectionModel.getConnection(data);
-    console.log(result);
-    if (!result) {
+    if (result) {
+      console.log("emit true");
       let child = await childrenModel.newChild(result.parent);
       await connectionModel.removeConnection(data);
       sockets.emit("found", { connect: child.insertedId });
@@ -25,6 +23,7 @@ nsp.on("connection", (sockets) => {
         .to(result.socketId)
         .emit("child connect", { connect: child.insertedId });
     } else {
+      console.log("emit false");
       sockets.broadcast.to(sockets.id).emit("not found", { connect: false });
     }
   });

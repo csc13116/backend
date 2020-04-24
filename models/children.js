@@ -10,8 +10,16 @@ module.exports.getPing = async (body) => {
     latitude: body.latitude,
     longitude: body.longitude,
     children: ObjectId(body.id),
-    time: Date(),
+    time: new Date(),
   };
   console.log(dbs);
   return await dbs.production.collection(POSITION).insertOne(ping);
+};
+
+module.exports.newChild = async (userId) => {
+  let child = {
+    name: "Temp",
+    user: ObjectId(userId),
+  };
+  return await dbs.production.collection(CHILDREN).insertOne(child);
 };

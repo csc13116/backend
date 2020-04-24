@@ -55,7 +55,7 @@ module.exports.getChildrenPos = async (id) => {
     .collection(CHILDREN)
     .find({ user: ObjectId(id) })
     .toArray();
-  if (children.length === 0) {
+  if (!children) {
     return false;
   }
   let position = [];
@@ -68,4 +68,12 @@ module.exports.getChildrenPos = async (id) => {
     position.push(temp);
   }
   return position;
+};
+
+module.exports.checkById = async (id) => {
+  const user = await dbs.production
+    .collection(USERS)
+    .findOne({ _id: ObjectId(id) });
+  if (user) return true;
+  return false;
 };

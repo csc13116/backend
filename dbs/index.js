@@ -29,10 +29,14 @@ function connect(url) {
 
 exports.initdb = async function () {
   let database = await connect(PROD_URI);
-  await database.collection("positions").dropIndex("time_1");
-  database
-    .collection("positions")
-    .createIndex({ time: 1 }, { expireAfterSeconds: 172800 });
+  // await database.collection("positions").dropIndex("time_1");
+  // database
+  //   .collection("positions")
+  //   .createIndex({ time: 1 }, { expireAfterSeconds: 172800 });
+  // await database.collection("connections").dropIndex("time_1");
+  // database
+  //   .collection("connections")
+  //   .createIndex({ time: 1 }, { expireAfterSeconds: 1200 });
   dbs.production = database;
 };
 

@@ -13,6 +13,7 @@ nsp.on("connection", (sockets) => {
     sockets.emit("wait connect", { connectionString });
   });
   sockets.on("child wait", async (data) => {
+    console.log("connect to child")
     const result = await connectionModel.getConnection(data);
     if (!result) {
       let child = await childrenModel.newChild(result.parent);

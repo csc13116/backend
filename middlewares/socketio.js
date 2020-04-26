@@ -6,11 +6,17 @@ var childrenModel = require("../models/children");
 //
 nsp.on("connection", (sockets) => {
   sockets.on("parent wait", async (data) => {
-    let connectionString = await connectionModel.setConnection(
-      data,
-      sockets.id
-    );
-    sockets.emit("wait connect", { connectionString });
+    let isConnection = await connectionModel.checkConnection(data);
+    if (isConnection) {
+      let connectionString = await connectionModel.newConnectionString(data);
+      sockets.emit("wait connect", { connectionString });
+    } else {
+      let connectionString = await connectionModel.setConnection(
+        data,
+        sockets.id
+      );
+      sockets.emit("wait connect", { connectionString });
+    }
   });
   sockets.on("child wait", async (data) => {
     const result = await connectionModel.getConnection(data);
@@ -24,17 +30,17 @@ nsp.on("connection", (sockets) => {
         .emit("child connect", { connect: child.insertedId });
     } else {
       console.log("emit false");
-      sockets.broadcast.to(sockets.id).emit("not found", { connect: false });
+      sockets.emit("found", { connect: false });
     }
   });
-  sockets.on("set new connection", async (data) => {
-    const result = await connectionModel.newConnectionString(data);
-    if (!result) {
-      sockets.emit("get new connection", { newConnectionString: result });
-    } else {
-      sockets.emit("erro", { msg: "not found" });
-    }
-  });
+  // sockets.on("set new connection", async (data) => {
+  //   const result = await connectionModel.newConnectionString(data);
+  //   if (!result) {
+  //     sockets.emit("get new connection", { newConnectionString: result });
+  //   } else {
+  //     sockets.emit("erro", { msg: "not found" });
+  //   }
+  // });
 });
 
 socketAPI.io = io;

@@ -2,7 +2,6 @@ const { dbs } = require("../dbs");
 const ObjectId = require("mongodb").ObjectId;
 const CONNECTION = "connections";
 const usersModel = require("../models/users");
-const nsp = require("../middlewares/socketio");
 
 module.exports.setConnection = async (id, socketId) => {
   let parent = await usersModel.checkById(id);
@@ -56,10 +55,20 @@ module.exports.getConnection = async (connectionString) => {
   return connection;
 };
 
+module.exports.checkConnection = async (parentId) => {
+  const connection = await dbs.production
+    .collection(CONNECTION)
+    .findOne({ parent: ObjectId(parentId) });
+  if (!connection) {
+    return false;
+  }
+  return true;
+};
+
 module.exports.removeConnection = async (connectionString) => {
   const connection = await dbs.production
     .collection(CONNECTION)
-    .remove({ connectionString });
+    .deleteOne({ connectionString });
   if (!connection) {
     return false;
   }

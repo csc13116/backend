@@ -30,7 +30,8 @@ module.exports.newConnectionString = async (id) => {
   let newConnectionString = Math.floor(Math.random() * 1000000)
     .toString()
     .padStart(6, "0");
-  const newConnection = await dbs.production.collection(CONNECTION).update(
+
+  let connectionString = await dbs.production.collection(CONNECTION).updateOne(
     { parent: ObjectId(id) },
     {
       $set: {
@@ -39,11 +40,9 @@ module.exports.newConnectionString = async (id) => {
       },
     }
   );
-  console.log(newConnection);
-  if (newConnection) {
+  if (connectionString) {
     return newConnectionString;
   }
-  return false;
 };
 
 module.exports.getConnection = async (connectionString) => {

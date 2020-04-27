@@ -39,7 +39,8 @@ module.exports.newConnectionString = async (id) => {
       },
     }
   );
-  if (newConnection.nMatched === 1 && newConnection.nModified === 1) {
+  console.log(newConnection);
+  if (newConnection) {
     return newConnectionString;
   }
   return false;

@@ -77,3 +77,14 @@ module.exports.checkById = async (id) => {
   if (user) return true;
   return false;
 };
+
+module.exports.updateName = async (data) => {
+  return await dbs.production.collection(USERS).updateOne(
+    { _id: ObjectId(data.id) },
+    {
+      $set: {
+        name: data.name,
+      },
+    }
+  );
+};

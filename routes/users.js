@@ -17,4 +17,10 @@ router.get("/:id/getchildrenping", async function (req, res, next) {
   }
 });
 
+router.post("/rename", async function (req, res, next) {
+  let body = req.body;
+  const result = await userModel.updateName(body);
+  res.json(result);
+});
+
 module.exports = router;

@@ -23,3 +23,14 @@ module.exports.newChild = async (userId) => {
   };
   return await dbs.production.collection(CHILDREN).insertOne(child);
 };
+
+module.exports.updateName = async (data) => {
+  return await dbs.production.collection(CHILDREN).updateOne(
+    { _id: ObjectId(data.id) },
+    {
+      $set: {
+        name: data.name,
+      },
+    }
+  );
+};

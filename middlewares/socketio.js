@@ -37,7 +37,10 @@ nspConnect.on("connection", (sockets) => {
       });
       sockets.broadcast
         .to(result.socketId)
-        .emit("child connect", { connect: child.insertedId });
+        .emit("child connect", {
+          connect: child.insertedId,
+          relation: relation.insertedId,
+        });
     } else {
       console.log("emit false");
       sockets.emit("found", { connect: false });

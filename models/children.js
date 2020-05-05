@@ -5,7 +5,7 @@ const USERS = "users";
 const CHILDREN = "childrens";
 const POSITION = "positions";
 
-module.exports.getPing = async (body) => {
+exports.getPing = async (body) => {
   let ping = {
     latitude: body.latitude,
     longitude: body.longitude,
@@ -16,7 +16,7 @@ module.exports.getPing = async (body) => {
   return await dbs.production.collection(POSITION).insertOne(ping);
 };
 
-module.exports.newChild = async (userId) => {
+exports.newChild = async (userId) => {
   let child = {
     name: "Temp",
     user: ObjectId(userId),
@@ -24,7 +24,7 @@ module.exports.newChild = async (userId) => {
   return await dbs.production.collection(CHILDREN).insertOne(child);
 };
 
-module.exports.updateName = async (data) => {
+exports.updateName = async (data) => {
   return await dbs.production.collection(CHILDREN).updateOne(
     { _id: ObjectId(data.id) },
     {

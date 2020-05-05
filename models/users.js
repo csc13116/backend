@@ -1,4 +1,6 @@
-const { dbs } = require("../dbs");
+const {
+  dbs
+} = require("../dbs");
 const ObjectId = require("mongodb").ObjectId;
 const bcrypt = require("bcrypt");
 const USERS = "users";
@@ -21,7 +23,7 @@ exports.get = async (username) => {
   });
 };
 
-module.exports.add = async (user) => {
+exports.add = async (user) => {
   return await dbs.production.collection(USERS).insertOne(user);
 };
 
@@ -49,42 +51,60 @@ exports.check = async (username) => {
   return false;
 };
 
-module.exports.getChildrenPos = async (id) => {
-  console.log(id);
+exports.getChildrenPos = async (id) => {
   const children = await dbs.production
     .collection(CHILDREN)
-    .find({ user: ObjectId(id) })
+    .find({
+      user: ObjectId(id)
+    })
     .toArray();
+
   if (!children) {
-    return false;
+    return [];
   }
-  let position = [];
-  let temp = null;
-  for (let index = 0; index < children.length; index++) {
-    temp = await dbs.production
-      .collection(POSITION)
-      .find({ children: ObjectId(children[index]._id) })
-      .toArray();
-    position.push(temp);
-  }
-  return position;
+
+  const childrenID = children.map(i => i._id);
+
+  const positions = await dbs.production
+    .collection(POSITION)
+    .find({
+      children: {
+        $in: childrenID
+      }
+    })
+    .toArray();
+  return positions;
+
+  // let position = [];
+  // let temp = null;
+  // for (let index = 0; index < children.length; index++) {
+  //   temp = await dbs.production
+  //     .collection(POSITION)
+  //     .find({
+  //       children: ObjectId(children[index]._id)
+  //     })
+  //     .toArray();
+  //   position.push(temp);
+  // }
+  // return position;
 };
 
-module.exports.checkById = async (id) => {
+exports.checkById = async (id) => {
   const user = await dbs.production
     .collection(USERS)
-    .findOne({ _id: ObjectId(id) });
+    .findOne({
+      _id: ObjectId(id)
+    });
   if (user) return true;
   return false;
 };
 
-module.exports.updateName = async (data) => {
-  return await dbs.production.collection(USERS).updateOne(
-    { _id: ObjectId(data.id) },
-    {
-      $set: {
-        name: data.name,
-      },
-    }
-  );
+exports.updateName = async (data) => {
+  return await dbs.production.collection(USERS).updateOne({
+    _id: ObjectId(data.id)
+  }, {
+    $set: {
+      name: data.name,
+    },
+  });
 };

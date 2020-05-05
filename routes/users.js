@@ -1,24 +1,23 @@
-var express = require("express");
-var router = express.Router();
-var userModel = require("../models/users");
+const express = require("express");
+const router = express.Router();
+const userModel = require("../models/users");
+const middlewareAuth = require('../middlewares/auth');
+
+const isAuth = middlewareAuth.isAuth;
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-router.get("/:id/getchildrenping", async function (req, res, next) {
-  let userId = req.params.id;
-  let position = await userModel.getChildrenPos(userId);
-  if (!position) {
-    res.json({ status: 404, msg: "Not Found" });
-  } else {
-    res.json(position);
-  }
+router.get("/getchildrenping", isAuth, async function (req, res) {
+  const userId = req.user._id;
+  const positions = await userModel.getChildrenPos(userId);
+  return res.json(positions);
 });
 
 router.post("/rename", async function (req, res, next) {
-  let body = req.body;
+  const body = req.body;
   const result = await userModel.updateName(body);
   res.json(result);
 });

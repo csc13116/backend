@@ -2,7 +2,7 @@
 ## Host link:
 [https://dacnpm-backend.herokuapp.com/](https://dacnpm-backend.herokuapp.com/)
 ## APIs:
-[https://documenter.getpostman.com/view/8829864/Szmb7L6L](Danh sách API)
+[https://documenter.getpostman.com/view/8829864/Szmb7L6L/](Danh sách API)
 ### ID để test lấy vị trí con về
 #### 5e932814d26d1d1d9c5cd034
 #### Route: /users/:id/getchildrenping

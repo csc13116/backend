@@ -5,12 +5,16 @@ const SALT_ROUNDS = 10;
 
 exports.register = async (req, res, next) => {
     if (!req.body.username || !req.body.password) {
-        return res.status(205).send("Tên đăng nhập hoặc mật khẩu không được trống.");
+        return res.status(205).json({
+            msg: 'Tên đăng nhập hoặc mật khẩu không được trống.'
+        });
     }
     const username = (req.body.username).toLowerCase();
     const user = await modelUser.get(username);
     if (user)
-        res.status(205).send("Tên đăng nhập đã tồn tại. Vui lòng nhập lại.");
+        res.status(205).json({
+            msg: 'Tên đăng nhập đã tồn tại. Vui lòng nhập lại.'
+        });
     else {
         const hashPassword = bcrypt.hashSync(req.body.password, SALT_ROUNDS);
         const newUser = {
@@ -18,7 +22,9 @@ exports.register = async (req, res, next) => {
             password: hashPassword
         }
         await modelUser.add(newUser);
-        return res.status(201).send("Tạo tài khoản thành công.");
+        return res.status(201).json({
+            msg: 'Tạo tài khoản thành công.'
+        });
     }
 };
 
@@ -29,11 +35,15 @@ exports.login = async (req, res) => {
     username = username.toLowerCase();
     const user = await modelUser.get(username);
     if (!user) {
-        return res.status(401).send("Tên đăng nhập không tồn tại.");
+        return res.status(401).json({
+            msg: 'Tên đăng nhập không tồn tại.'
+        });
     }
     const isPasswordValid = await modelUser.validPassword(username, password);
     if (!isPasswordValid) {
-        return res.status(401).send("Tên đăng nhập hoặc mật khẩu không chính xác.");
+        return res.status(401).json({
+            msg: 'Tên đăng nhập hoặc mật khẩu không chính xác.'
+        })
     }
 
     const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h";
@@ -44,10 +54,12 @@ exports.login = async (req, res) => {
     };
     await methodAuth.generateToken(dataForAccessToken, accessTokenSecret, accessTokenLife, async (accessToken) => {
         if (accessToken === false) {
-            return res.status(401).send("Đăng nhập sai. Vui lòng thử lại.");
+            return res.status(401).json({
+                msg: 'Đăng nhập sai. Vui lòng thử lại.'
+            });
         }
         return res.status(200).json({
-            mesage: "Đăng nhập thành công",
+            msg: 'Đăng nhập thành công',
             token: accessToken
         });
     });

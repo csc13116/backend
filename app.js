@@ -1,3 +1,4 @@
+require('express-async-errors');
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -27,7 +28,7 @@ opts.secretOrKey =
 passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
-    const user = await modelUser.detail(jwt_payload.user._id);
+    const user = await modelUser.detail(jwt_payload.payload._id);
     if (!user) {
       return done(null, false);
     }
@@ -53,10 +54,6 @@ app.use(
 );
 // ====================================
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "hbs");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(
@@ -66,7 +63,6 @@ app.use(
 );
 app.use(bodyParser());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.io = io;
 
@@ -91,9 +87,7 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  res.status(err.status || 500).send(err.message);
 });
 
 module.exports = app;

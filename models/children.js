@@ -5,15 +5,15 @@ const USERS = "users";
 const CHILDREN = "childrens";
 const POSITION = "positions";
 
-exports.getPing = async (body) => {
-  let ping = {
+exports.ping = async (body) => {
+  const ping = {
     latitude: body.latitude,
     longitude: body.longitude,
-    children: ObjectId(body.id),
+    children: ObjectId(body.children),
     time: new Date(),
   };
-  console.log(dbs);
-  return await dbs.production.collection(POSITION).insertOne(ping);
+  await dbs.production.collection(POSITION).insertOne(ping);
+  return ping;
 };
 
 exports.newChild = async (userId) => {

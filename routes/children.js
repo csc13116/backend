@@ -11,7 +11,7 @@ router.post("/ping", async function (req, res, next) {
 router.get("/:id/ping", async function (req, res, next) {
   let id = req.params.id;
   const result = await childrenModel.getChildPing(id);
-  res.json(result);
+  res.json(result[0]);
 });
 
 module.exports = router;

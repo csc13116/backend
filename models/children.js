@@ -12,7 +12,6 @@ module.exports.getPing = async (body) => {
     children: ObjectId(body.id),
     time: new Date(),
   };
-  console.log(dbs);
   return await dbs.production.collection(POSITION).insertOne(ping);
 };
 
@@ -29,5 +28,6 @@ module.exports.getChildPing = async (childId) => {
     .collection(POSITION)
     .find({ children: ObjectId(childId) })
     .sort({ time: -1 })
-    .limit(1);
+    .limit(1)
+    .toArray();
 };

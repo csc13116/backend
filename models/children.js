@@ -23,3 +23,11 @@ module.exports.newChild = async (userId) => {
   };
   return await dbs.production.collection(CHILDREN).insertOne(child);
 };
+
+module.exports.getChildPing = async (childId) => {
+  return await dbs.production
+    .collection(POSITION)
+    .find({ children: ObjectId(childId) })
+    .sort({ time: -1 })
+    .limit(1);
+};

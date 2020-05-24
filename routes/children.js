@@ -8,4 +8,10 @@ router.post("/ping", async function (req, res, next) {
   res.json(result);
 });
 
+router.get("/:id/ping", async function (req, res, next) {
+  let id = req.params.id;
+  const result = await childrenModel.getChildPing(id);
+  res.json(result);
+});
+
 module.exports = router;

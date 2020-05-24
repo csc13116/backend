@@ -28,6 +28,11 @@
 #### 5e92c35b3d0b35496c7722f6
 #### 5e92c4b13d0b35496c7722fa
 #### Route: /children/ping
+#### Type: POST
+#### Body:
+latitude: ,
+longitude: ,
+id: ,
 ##### JSON res:
 {
     "savedPosition": {

@@ -4,7 +4,7 @@
 ### Lấy vị trí của con theo ID của nó
 ### ID con để test
 #### 5e92c4b13d0b35496c7722fa
-#### 5e92c35b3d0b35496c7722f6
+#### 5e92c4b13d0b35496c7722f6
 #### Route: /children/:id/ping (GET)
 #### JSON res:
 {

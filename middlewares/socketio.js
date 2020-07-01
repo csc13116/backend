@@ -6,14 +6,16 @@ var childrenModel = require("../models/children");
 //
 nsp.on("connection", (sockets) => {
   sockets.on("parent wait", async (data) => {
-    let isConnection = await connectionModel.checkConnection(data);
+    const { phoneNumber, userId } = data;
+    let isConnection = await connectionModel.checkConnection(userId);
     if (isConnection) {
-      let connectionString = await connectionModel.newConnectionString(data);
+      let connectionString = await connectionModel.newConnectionString(userId);
       sockets.emit("wait connect", { connectionString });
     } else {
       let connectionString = await connectionModel.setConnection(
-        data,
-        sockets.id
+        userId,
+        sockets.id,
+        phoneNumber
       );
       sockets.emit("wait connect", { connectionString });
     }
@@ -24,7 +26,10 @@ nsp.on("connection", (sockets) => {
       console.log("emit true");
       let child = await childrenModel.newChild(result.parent);
       await connectionModel.removeConnection(data);
-      sockets.emit("found", { connect: child.insertedId });
+      sockets.emit("found", {
+        connect: child.insertedId,
+        phoneNumber: result.phoneNumber,
+      });
       sockets.broadcast
         .to(result.socketId)
         .emit("child connect", { connect: child.insertedId });

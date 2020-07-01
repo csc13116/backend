@@ -9,6 +9,10 @@ var dbs = {
   production: {},
 };
 
+/**
+ *
+ * @param {string} url
+ */
 function connect(url) {
   return MongoClient.connect(url, {
     useNewUrlParser: true,

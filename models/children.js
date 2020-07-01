@@ -31,3 +31,17 @@ module.exports.getChildPing = async (childId) => {
     .limit(1)
     .toArray();
 };
+
+/**
+ *
+ * @param {string} childId
+ */
+
+module.exports.getChildPings = async (childId) => {
+  return await dbs.production
+    .collection(POSITION)
+    .find({ children: ObjectId(childId) })
+    .sort({ time: -1 })
+    .limit(2160)
+    .toArray();
+};

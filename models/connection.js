@@ -3,7 +3,7 @@ const ObjectId = require("mongodb").ObjectId;
 const CONNECTION = "connections";
 const usersModel = require("../models/users");
 
-module.exports.setConnection = async (id, socketId) => {
+module.exports.setConnection = async (id, socketId, phoneNumber) => {
   let parent = await usersModel.checkById(id);
   if (parent) {
     let newConnection = {
@@ -12,6 +12,7 @@ module.exports.setConnection = async (id, socketId) => {
         .toString()
         .padStart(6, "0"),
       socketId,
+      phoneNumber,
       time: new Date(),
     };
     const connections = await dbs.production

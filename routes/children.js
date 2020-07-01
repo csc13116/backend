@@ -18,7 +18,7 @@ router.get("/:id/ping", async function (req, res, next) {
 
 router.get("/:id/pings", async function (req, res, next) {
   let id = req.params.id;
-  let results = await childrenModel.getChildPing(id);
+  let results = await childrenModel.getChildPings(id);
   console.log(results.length);
   let previousPos = results[0];
   let filterResult = [previousPos];

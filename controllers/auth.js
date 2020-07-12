@@ -48,7 +48,8 @@ exports.login = async (req, res) => {
         }
         return res.status(200).json({
             mesage: "Đăng nhập thành công",
-            token: accessToken
+            token: accessToken,
+userId:user._id
         });
     });
 }

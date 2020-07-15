@@ -17,6 +17,7 @@ router.get("/:id/ping", async function (req, res, next) {
 });
 
 router.post("/name", async function (req, res, next) {
+  console.log(req.body);
   const { id, name } = req.body;
   const result = await childrenModel.changeChildName(id, name);
   res.json(result);

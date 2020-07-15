@@ -7,7 +7,7 @@ router.post("/ping", async function (req, res, next) {
   let body = req.body;
   console.log(body);
   const result = await childrenModel.getPing(body);
-  res.json(result);
+  res.json({ result: result.insertedCount });
 });
 
 router.get("/:id/ping", async function (req, res, next) {

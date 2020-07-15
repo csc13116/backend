@@ -33,7 +33,6 @@ module.exports.getChildPing = async (childId) => {
 };
 
 module.exports.changeChildName = async (id, name) => {
-  console.log(id);
   return await dbs.production
     .collection(CHILDREN)
     .updateOne({ _id: ObjectId(id) }, { $set: { name } });
@@ -46,7 +45,7 @@ module.exports.getChildren = async (parentId) => {
     .toArray();
   let getPing = await this.getChildPing(result[0]._id);
 
-  result[0].defaultPing = getPing;
+  result[0].defaultPing = getPing[0];
 
   return result;
 };

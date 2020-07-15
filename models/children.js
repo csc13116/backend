@@ -32,6 +32,24 @@ module.exports.getChildPing = async (childId) => {
     .toArray();
 };
 
+module.exports.changeChildName = async (id, name) => {
+  return await dbs.production
+    .collection(CHILDREN)
+    .updateOne({ _id: ObjectId(id) }, { $set: { name } });
+};
+
+module.exports.getChildren = async (parentId) => {
+  let result = await dbs.production
+    .collection(CHILDREN)
+    .find({ user: ObjectId(parentId) })
+    .toArray();
+  let getPing = await this.getChildPing(result[0]._id);
+
+  result[0].defaultPing = getPing;
+
+  return result;
+};
+
 /**
  *
  * @param {string} childId
